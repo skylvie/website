@@ -1,0 +1,11 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "serve": "node server.js"
+  },
+  "author": "Slyvie Rain",
+  "license": "MIT",
+  "packageManager": "pnpm@10.24.0"
+}
