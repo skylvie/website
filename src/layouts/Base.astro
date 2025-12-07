@@ -26,33 +26,6 @@ try {
 }
 
 const commitUrl = `https://github.com/skylvie/website/commit/${commitHash}`;
-
-let visitorCount = 0;
-
-try {
-    const visitorUrl = new URL("/api/visitor", Astro.url);
-    const res = await fetch(visitorUrl);
-
-    if (res.ok) {
-        const data = await res.json();
-        visitorCount = data.count;
-    }
-} catch {
-    visitorCount = 0;
-}
-
-function getOrdinalSuffix(num: number): string {
-    const j = num % 10;
-    const k = num % 100;
-
-    if (j === 1 && k !== 11) return "st";
-    if (j === 2 && k !== 12) return "nd";
-    if (j === 3 && k !== 13) return "rd";
-
-    return "th";
-}
-
-const visitorOrdinal = `${visitorCount.toLocaleString()}${getOrdinalSuffix(visitorCount)}`;
 ---
 
 <!doctype html>
@@ -148,12 +121,13 @@ const visitorOrdinal = `${visitorCount.toLocaleString()}${getOrdinalSuffix(visit
                 "
             >
                 <span
+                    id="visitor-count"
                     style="
                         color: var(--muted);
                         font-size: 12px;
                     "
                 >
-                    You are the {visitorOrdinal} visitor!
+                    Loading visitors...
                 </span>
                 <a
                     href={commitUrl}
@@ -172,5 +146,36 @@ const visitorOrdinal = `${visitorCount.toLocaleString()}${getOrdinalSuffix(visit
                 </a>
             </footer>
         </div>
+        <script>
+            function getOrdinalSuffix(num: number): string {
+                const j = num % 10;
+                const k = num % 100;
+                if (j === 1 && k !== 11) return "st";
+                if (j === 2 && k !== 12) return "nd";
+                if (j === 3 && k !== 13) return "rd";
+                return "th";
+            }
+
+            async function loadVisitorCount() {
+                try {
+                    const res = await fetch("/api/visitor");
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        const count = data.count;
+                        const ordinal = `${count.toLocaleString()}${getOrdinalSuffix(count)}`;
+                        const elem = document.getElementById("visitor-count");
+
+                        if (elem) {
+                            elem.textContent = `You are the ${ordinal} visitor!`;
+                        }
+                    }
+                } catch (err) {
+                    console.error("Failed to load visitor count:", err);
+                }
+            }
+
+            loadVisitorCount();
+        </script>
     </body>
 </html>
