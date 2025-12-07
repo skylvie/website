@@ -13,7 +13,7 @@ interface RepoCard {
 const items = (projects as any).projects ?? [];
 
 async function loadRepo(repoUrl: string): Promise<any | null> {
-    const apiUrl = new URL("/api/github.json", Astro.url);
+    const apiUrl = new URL("/api/github", Astro.url);
     apiUrl.searchParams.set("repo", repoUrl);
     try {
         const res = await fetch(apiUrl);

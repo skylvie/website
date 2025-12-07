@@ -8,8 +8,8 @@ import { siDiscord, siGithub, siLastdotfm, siGmail } from "simple-icons";
 
 const socials = (home as any).socails ?? {};
 
-const lastfmUrl = new URL("/api/lastfm.json", Astro.url);
-const discordUrl = new URL("/api/discord.json", Astro.url);
+const lastfmUrl = new URL("/api/lastfm", Astro.url);
+const discordUrl = new URL("/api/discord", Astro.url);
 
 const [lastfmRes, discordRes] = await Promise.all([
 	fetch(lastfmUrl).catch(() => null),
@@ -244,8 +244,8 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 	async function refreshData() {
 		try {
 			const [discordRes, lastfmRes] = await Promise.all([
-				fetch("/api/discord.json").catch(() => null),
-				fetch("/api/lastfm.json").catch(() => null),
+				fetch("/api/discord").catch(() => null),
+				fetch("/api/lastfm").catch(() => null),
 			]);
 
 			if (discordRes?.ok) {
