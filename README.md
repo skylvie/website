@@ -10,10 +10,9 @@ pnpm preview
 
 ## TODO
 - Better mobile support
-- Better background
 - Show current Git commit hash
 - Show most used language, stars, and forks on the project card
 - Page/view transitions
 - Unique visitor count
 - 88x31 buttons
-- comments
+- commentsg
