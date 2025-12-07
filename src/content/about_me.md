@@ -1,7 +1,7 @@
 Hi, I'm a HS junior interested in web development!
 I've been interested in programming for 6~ years, since middle school.
 
-Currently, I mostly work on fullstack projects. My main language of choice is TypeScript however I also know:
+My main language of choice is TypeScript, however, I also know:
 - JavaScript (of course)
 - HTML & CSS (not real languages)
 - Python 3 (Haven't used it in ages)

@@ -2,9 +2,18 @@
 export const prerender = false;
 
 import BaseLayout from "../layouts/Base.astro";
-import aboutMe from "../content/about_me.txt?raw";
+import aboutMeRaw from "../content/about_me.md?raw";
 import home from "../content/home.json";
 import { siDiscord, siGithub, siLastdotfm, siGmail } from "simple-icons";
+import MarkdownIt from "markdown-it";
+
+const md = new MarkdownIt({
+	html: true,
+	linkify: true,
+	breaks: true,
+});
+
+const aboutMeHtml = md.render(aboutMeRaw);
 
 const socials = (home as any).socails ?? {};
 
@@ -25,8 +34,6 @@ const socialIcons = [
 	{ key: "lastfm", icon: siLastdotfm, label: "Last.fm", color: "#D51007" },
 	{ key: "email", icon: siGmail, label: "Email", color: "#EA4335" },
 ].filter(({ key }) => Boolean(socials[key]));
-
-const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 ---
 
 <BaseLayout title="Home" description="Skylvie's Website">
@@ -243,15 +250,10 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 			<div
 				style="
 					color: var(--text); 
-					display: grid; 
-					gap: 10px; 
 					text-align: left;
 				"
-			>
-				{aboutLines.map((line) => (
-					<p style="margin: 0;">{line}</p>
-				))}
-			</div>
+				set:html={aboutMeHtml}
+			/>
 		</div>
 
 		<div class="glass card">
