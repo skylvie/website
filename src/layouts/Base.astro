@@ -15,6 +15,16 @@ const {
 const pageTitle = title ? `${title} | SylvNET` : "SylvNET";
 const origin = Astro.url?.origin ?? "http://localhost:4321";
 const canonical = `${origin}${Astro.url.pathname}`;
+let commitHash = "dev";
+
+try {
+    const { execSync } = await import("child_process");
+    commitHash = execSync("git rev-parse --short HEAD").toString().trim();
+} catch {
+    commitHash = "unknown";
+}
+
+const commitUrl = `https://github.com/skylvie/website/commit/${commitHash}`;
 ---
 
 <!doctype html>
@@ -93,6 +103,21 @@ const canonical = `${origin}${Astro.url.pathname}`;
                         >Blog</a
                     >
                 </nav>
+                <a
+                    href={commitUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    style="
+                        color: var(--muted);
+                        font-size: 12px;
+                        font-family: var(--font-mono);
+                        text-decoration: underline;
+                        transition: color 150ms ease;
+                    "
+                    title="View commit on GitHub"
+                >
+                    {commitHash}
+                </a>
             </header>
             <main>
                 <slot />
