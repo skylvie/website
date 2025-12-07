@@ -77,18 +77,9 @@
 
 @layer base {
     :root {
+        color-scheme: dark;
         --font-sans: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
         --font-mono: "JetBrains Mono", "Fira Code", monospace;
-        --bg: #eff1f5;
-        --bg-surface: #e6e9ef;
-        --text: #4c4f69;
-        --muted: #6c6f85;
-        --accent: #ea76cb;
-        --border: #bcc0cc;
-    }
-
-    :root.dark {
-        color-scheme: dark;
         --bg: #1e1e2e;
         --bg-surface: #313244;
         --text: #cdd6f4;

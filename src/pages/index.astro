@@ -70,7 +70,7 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 					>
 						<span
 							id="status-dot"
-							style={`width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; background: light-dark(${discord.status === "online" ? "#40a02b" : discord.status === "idle" ? "#df8e1d" : discord.status === "dnd" ? "#d20f39" : "#9ca0b0"}, ${discord.status === "online" ? "#a6e3a1" : discord.status === "idle" ? "#f9e2af" : discord.status === "dnd" ? "#f38ba8" : "#6c7086"});`}
+							style={`width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; background: ${discord.status === "online" ? "#a6e3a1" : discord.status === "idle" ? "#f9e2af" : discord.status === "dnd" ? "#f38ba8" : "#6c7086"};`}
 						></span>
 						{discord.customStatus && discord.status !== "online" && (
 							<span id="status-text" style="font-size: 13px; overflow-wrap: break-word;">
@@ -190,15 +190,15 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 			const statusText = document.getElementById("status-text");
 
 			if (statusDot) {
-				const colors = {
-					online: { light: "#40a02b", dark: "#a6e3a1" },
-					idle: { light: "#df8e1d", dark: "#f9e2af" },
-					dnd: { light: "#d20f39", dark: "#f38ba8" },
-					offline: { light: "#9ca0b0", dark: "#6c7086" },
+				const colors: Record<string, string> = {
+					online: "#a6e3a1",
+					idle: "#f9e2af",
+					dnd: "#f38ba8",
+					offline: "#6c7086",
 				};
 
-				const statusColors = colors[data.status as keyof typeof colors] || colors.offline;
-				statusDot.style.background = `light-dark(${statusColors.light}, ${statusColors.dark})`;
+				const statusColor = colors[data.status] || colors.offline;
+				statusDot.style.background = statusColor;
 			}
 
 			if (statusText) {

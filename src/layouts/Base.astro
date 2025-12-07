@@ -12,7 +12,7 @@ const {
     description = "HS junior interested in web development and anything network-related",
     ogImage = "https://skylvi.net/pfp.png",
 } = Astro.props as Props;
-const pageTitle = title ? `${title} | SlyvNET` : "SlyvNET";
+const pageTitle = title ? `${title} | SylvNET` : "SylvNET";
 const origin = Astro.url?.origin ?? "http://localhost:4321";
 const canonical = `${origin}${Astro.url.pathname}`;
 ---
@@ -43,23 +43,6 @@ const canonical = `${origin}${Astro.url.pathname}`;
         <meta name="twitter:image" content={ogImage} />
     </head>
     <body>
-        <script is:inline>
-            const theme = localStorage.getItem("theme") || "auto";
-
-            window.__themeLoaded = false;
-
-            if (
-                theme === "dark" ||
-                (theme === "auto" &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches)
-            ) {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-
-            window.__themeLoaded = true;
-        </script>
         <div class="page-shell">
             <header
                 class="glass card"
@@ -84,142 +67,10 @@ const canonical = `${origin}${Astro.url.pathname}`;
                         style="padding: 6px 10px; font-size: 12px;">Blog</a
                     >
                 </nav>
-                <button
-                    id="theme-toggle"
-                    aria-label="Toggle theme"
-                    style="background: var(--bg-surface); border: 1px solid #f5c2e7; border-radius: 6px; padding: 0; display: flex; align-items: center; cursor: pointer; overflow: hidden; flex-shrink: 0;"
-                >
-                    <div
-                        id="dark-option"
-                        style="display: flex; align-items: center; justify-content: center; padding: 8px 10px; background: transparent; color: var(--text); transition: all 200ms ease;"
-                    >
-                        <svg
-                            style="width: 16px; height: 16px;"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <path
-                                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-                            ></path>
-                        </svg>
-                    </div>
-                    <div
-                        style="width: 1px; height: 20px; background: var(--border);"
-                    >
-                    </div>
-                    <div
-                        id="light-option"
-                        style="display: flex; align-items: center; justify-content: center; padding: 8px 10px; background: transparent; color: var(--text); transition: all 200ms ease;"
-                    >
-                        <svg
-                            style="width: 16px; height: 16px;"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                        >
-                            <circle cx="12" cy="12" r="5"></circle><line
-                                x1="12"
-                                y1="1"
-                                x2="12"
-                                y2="3"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="12"
-                                y1="21"
-                                x2="12"
-                                y2="23"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="4.22"
-                                y1="4.22"
-                                x2="5.64"
-                                y2="5.64"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="18.36"
-                                y1="18.36"
-                                x2="19.78"
-                                y2="19.78"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="1"
-                                y1="12"
-                                x2="3"
-                                y2="12"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="21"
-                                y1="12"
-                                x2="23"
-                                y2="12"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="4.22"
-                                y1="19.78"
-                                x2="5.64"
-                                y2="18.36"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line><line
-                                x1="18.36"
-                                y1="5.64"
-                                x2="19.78"
-                                y2="4.22"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"></line>
-                        </svg>
-                    </div>
-                </button>
             </header>
             <main>
                 <slot />
             </main>
         </div>
-        <script>
-            function updateThemeToggle() {
-                const html = document.documentElement;
-                const isDark = html.classList.contains("dark");
-                const darkOption = document.getElementById("dark-option");
-                const lightOption = document.getElementById("light-option");
-
-                if (isDark) {
-                    darkOption!.style.background = "#a6e3a1";
-                    darkOption!.style.color = "#000";
-                    lightOption!.style.background = "#f38ba8";
-                    lightOption!.style.color = "#fff";
-                } else {
-                    darkOption!.style.background = "#f38ba8";
-                    darkOption!.style.color = "#fff";
-                    lightOption!.style.background = "#a6e3a1";
-                    lightOption!.style.color = "#000";
-                }
-            }
-
-            const toggleBtn = document.getElementById("theme-toggle");
-            const html = document.documentElement;
-
-            updateThemeToggle();
-
-            toggleBtn?.addEventListener("click", () => {
-                const isDark = html.classList.contains("dark");
-                const newTheme = isDark ? "light" : "dark";
-
-                localStorage.setItem("theme", newTheme);
-
-                if (newTheme === "dark") {
-                    html.classList.add("dark");
-                } else {
-                    html.classList.remove("dark");
-                }
-
-                updateThemeToggle();
-            });
-        </script>
     </body>
 </html>
