@@ -1,0 +1,10 @@
+{
+    "posts": [
+        {
+            "title": "Test",
+            "date": "12-06-2025",
+            "summary": "Testing",
+            "id": "DEMO_BLOG_POST"
+        }
+    ]
+}

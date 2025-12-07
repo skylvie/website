@@ -1,0 +1,224 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+    title?: string;
+    description?: string;
+    ogImage?: string;
+}
+
+const {
+    title = "",
+    description = "HS junior interested in web development and anything network-related",
+    ogImage,
+} = Astro.props as Props;
+const pageTitle = title ? `${title} | SlyvNET` : "SlyvNET";
+const origin = Astro.url?.origin ?? "http://localhost:4321";
+const canonical = `${origin}${Astro.url.pathname}`;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{pageTitle}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" type="image/png" href="/pfp.png" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+            rel="stylesheet"
+        />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonical} />
+        {ogImage ? <meta property="og:image" content={ogImage} /> : null}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={description} />
+        {ogImage ? <meta name="twitter:image" content={ogImage} /> : null}
+    </head>
+    <body>
+        <script is:inline>
+            const theme = localStorage.getItem("theme") || "auto";
+
+            window.__themeLoaded = false;
+
+            if (
+                theme === "dark" ||
+                (theme === "auto" &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+
+            window.__themeLoaded = true;
+        </script>
+        <div class="page-shell">
+            <header
+                class="glass card"
+                style="margin-bottom: 18px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;"
+            >
+                <nav
+                    style="display: flex; gap: 8px; font-size: 14px; flex: 1; min-width: 0;"
+                >
+                    <a
+                        href="/"
+                        class="chip"
+                        style="padding: 6px 10px; font-size: 12px;">Home</a
+                    >
+                    <a
+                        href="/projects"
+                        class="chip"
+                        style="padding: 6px 10px; font-size: 12px;">Projects</a
+                    >
+                    <a
+                        href="/blog"
+                        class="chip"
+                        style="padding: 6px 10px; font-size: 12px;">Blog</a
+                    >
+                </nav>
+                <button
+                    id="theme-toggle"
+                    aria-label="Toggle theme"
+                    style="background: var(--bg-surface); border: 1px solid #f5c2e7; border-radius: 6px; padding: 0; display: flex; align-items: center; cursor: pointer; overflow: hidden; flex-shrink: 0;"
+                >
+                    <div
+                        id="dark-option"
+                        style="display: flex; align-items: center; justify-content: center; padding: 8px 10px; background: transparent; color: var(--text); transition: all 200ms ease;"
+                    >
+                        <svg
+                            style="width: 16px; height: 16px;"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <path
+                                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div
+                        style="width: 1px; height: 20px; background: var(--border);"
+                    >
+                    </div>
+                    <div
+                        id="light-option"
+                        style="display: flex; align-items: center; justify-content: center; padding: 8px 10px; background: transparent; color: var(--text); transition: all 200ms ease;"
+                    >
+                        <svg
+                            style="width: 16px; height: 16px;"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                        >
+                            <circle cx="12" cy="12" r="5"></circle><line
+                                x1="12"
+                                y1="1"
+                                x2="12"
+                                y2="3"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="12"
+                                y1="21"
+                                x2="12"
+                                y2="23"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="4.22"
+                                y1="4.22"
+                                x2="5.64"
+                                y2="5.64"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="18.36"
+                                y1="18.36"
+                                x2="19.78"
+                                y2="19.78"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="1"
+                                y1="12"
+                                x2="3"
+                                y2="12"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="21"
+                                y1="12"
+                                x2="23"
+                                y2="12"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="4.22"
+                                y1="19.78"
+                                x2="5.64"
+                                y2="18.36"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line><line
+                                x1="18.36"
+                                y1="5.64"
+                                x2="19.78"
+                                y2="4.22"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"></line>
+                        </svg>
+                    </div>
+                </button>
+            </header>
+            <main>
+                <slot />
+            </main>
+        </div>
+        <script>
+            function updateThemeToggle() {
+                const html = document.documentElement;
+                const isDark = html.classList.contains("dark");
+                const darkOption = document.getElementById("dark-option");
+                const lightOption = document.getElementById("light-option");
+
+                if (isDark) {
+                    darkOption!.style.background = "#a6e3a1";
+                    darkOption!.style.color = "#000";
+                    lightOption!.style.background = "#f38ba8";
+                    lightOption!.style.color = "#fff";
+                } else {
+                    darkOption!.style.background = "#f38ba8";
+                    darkOption!.style.color = "#fff";
+                    lightOption!.style.background = "#a6e3a1";
+                    lightOption!.style.color = "#000";
+                }
+            }
+
+            const toggleBtn = document.getElementById("theme-toggle");
+            const html = document.documentElement;
+
+            updateThemeToggle();
+
+            toggleBtn?.addEventListener("click", () => {
+                const isDark = html.classList.contains("dark");
+                const newTheme = isDark ? "light" : "dark";
+
+                localStorage.setItem("theme", newTheme);
+
+                if (newTheme === "dark") {
+                    html.classList.add("dark");
+                } else {
+                    html.classList.remove("dark");
+                }
+
+                updateThemeToggle();
+            });
+        </script>
+    </body>
+</html>

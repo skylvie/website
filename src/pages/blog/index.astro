@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/Base.astro";
+import blog from "../../content/blog.json";
+
+const posts = (blog as any).posts ?? [];
+
+function formatDate(raw: string): string {
+    const [month, day, year] = raw.split("-").map((n) => Number(n));
+    const dt = new Date(year, (month || 1) - 1, day || 1);
+
+    return dt.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+---
+
+<BaseLayout title="Blog" description="My blog">
+    <section class="glass card" style="display: grid; gap: 14px;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px;"
+        >
+            <h1 class="section-title" style="margin: 0;">Blog</h1>
+            <a class="button-link" href="/blog.rss">RSS</a>
+        </div>
+        <div style="display: grid; gap: 12px;">
+            {
+                posts.map((post: any) => (
+                    <article
+                        class="glass card"
+                        style="display: grid; gap: 8px;"
+                    >
+                        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap;">
+                            <a
+                                href={`/blog/post/${post.id}`}
+                                style="font-weight: 700; letter-spacing: 0.3px;"
+                            >
+                                {post.title}
+                            </a>
+                            <span class="chip">{formatDate(post.date)}</span>
+                        </div>
+                        <p
+                            class="subtle-text"
+                            style="margin: 0; color: var(--text);"
+                        >
+                            {post.summary}
+                        </p>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+</BaseLayout>

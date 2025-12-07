@@ -1,0 +1,270 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/Base.astro";
+import aboutMe from "../content/about_me.txt?raw";
+import home from "../content/home.json";
+import { siDiscord, siGithub, siLastdotfm, siGmail } from "simple-icons";
+
+const socials = (home as any).socails ?? {};
+
+const lastfmUrl = new URL("/api/lastfm.json", Astro.url);
+const discordUrl = new URL("/api/discord.json", Astro.url);
+
+const [lastfmRes, discordRes] = await Promise.all([
+	fetch(lastfmUrl).catch(() => null),
+	fetch(discordUrl).catch(() => null),
+]);
+
+const lastfm = lastfmRes?.ok ? await lastfmRes.json() : null;
+const discord = discordRes?.ok ? await discordRes.json() : null;
+
+const socialIcons = [
+	{ key: "github", icon: siGithub, label: "GitHub", color: "#181717" },
+	{ key: "discord", icon: siDiscord, label: "Discord", color: "#5865F2" },
+	{ key: "lastfm", icon: siLastdotfm, label: "Last.fm", color: "#D51007" },
+	{ key: "email", icon: siGmail, label: "Email", color: "#EA4335" },
+].filter(({ key }) => Boolean(socials[key]));
+
+const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
+---
+
+<BaseLayout title="Home" description="Slyvie's Website">
+	<section class="glass card">
+		<div
+			style="display: grid; grid-template-columns: minmax(80px, 100px) 1fr; gap: 16px; align-items: center;"
+		>
+			<div
+				style="width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: var(--bg-surface); flex-shrink: 0; display: flex; align-items: center; justify-content: center;"
+			>
+				<img
+					src="/pfp.png"
+					alt="Profile"
+					style="width: 100%; height: 100%; object-fit: cover;"
+					loading="lazy"
+				/>
+			</div>
+
+			<div
+				style="display: flex; flex-direction: column; gap: 8px; padding-top: 0; min-width: 0;"
+			>
+				<div
+					style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;"
+				>
+					<h1
+						style="margin: 0; font-size: clamp(20px, 5vw, 28px); letter-spacing: 0.4px; word-break: break-word;"
+					>
+						{home.name}
+					</h1>
+					<span
+						style="background: var(--accent); color: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap;"
+						>{home.pronouns}</span
+					>
+				</div>
+
+				{discord?.status && discord.status !== "offline" && (
+					<div
+						id="discord-status"
+						style="display: flex; gap: 6px; align-items: center; min-width: 0;"
+						data-status={discord.status}
+					>
+						<span
+							id="status-dot"
+							style={`width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; background: light-dark(${discord.status === "online" ? "#40a02b" : discord.status === "idle" ? "#df8e1d" : discord.status === "dnd" ? "#d20f39" : "#9ca0b0"}, ${discord.status === "online" ? "#a6e3a1" : discord.status === "idle" ? "#f9e2af" : discord.status === "dnd" ? "#f38ba8" : "#6c7086"});`}
+						></span>
+						{discord.customStatus && discord.status !== "online" && (
+							<span id="status-text" style="font-size: 13px; overflow-wrap: break-word;">
+								{discord.customStatus}
+							</span>
+						)}
+					</div>
+				)}
+			</div>
+		</div>
+
+		{
+			lastfm?.name ? (
+				<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: grid; grid-template-columns: minmax(60px, 80px) 1fr; gap: 12px; align-items: flex-start;">
+					<a
+						id="lastfm-artwork-link"
+						href={lastfm.url}
+						target="_blank"
+						rel="noreferrer"
+						style="width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+					>
+						<img
+							id="lastfm-artwork"
+							src={lastfm.artwork || "/pfp.png"}
+							alt="Album art"
+							style="width: 100%; height: 100%; object-fit: cover;"
+							loading="lazy"
+						/>
+					</a>
+					<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+						<a
+							id="lastfm-track-link"
+							href={lastfm.url}
+							target="_blank"
+							rel="noreferrer"
+							style="font-weight: 700; color: var(--accent); font-size: clamp(12px, 3vw, 14px); line-height: 1.3; word-break: break-word;"
+						>
+							{lastfm.name}
+						</a>
+						<a
+							id="lastfm-artist-link"
+							href={`https://www.last.fm/music/${encodeURIComponent(lastfm.artist)}`}
+							target="_blank"
+							rel="noreferrer"
+							style="font-size: 10px; color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 1px; word-break: break-word;"
+						>
+							{lastfm.artist}
+						</a>
+						<span id="lastfm-playing-text" style="font-size: 11px; color: var(--muted); margin-top: 2px;">
+							{lastfm.nowPlaying
+								? "Currently playing"
+								: "Last played"}
+						</span>
+					</div>
+				</div>
+			) : (
+				<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+					<p class="subtle-text" style="margin: 0;">
+						Last.fm please work
+					</p>
+				</div>
+			)
+		}
+	</section>
+
+	<section
+		style="margin-top: 22px; display: grid; grid-template-columns: 1fr; gap: 14px;"
+	>
+		<div class="glass card">
+			<h2 class="section-title">About</h2>
+			<div
+				style="color: var(--text); display: grid; gap: 10px; text-align: left;"
+			>
+				{aboutLines.map((line) => <p style="margin: 0;">{line}</p>)}
+			</div>
+		</div>
+
+		<div class="glass card">
+			<h2 class="section-title">Links</h2>
+			<div
+				style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: flex-start;"
+			>
+				{
+					socialIcons.map(({ key, icon, label, color }) => (
+						<a
+							href={socials[key]}
+							target="_blank"
+							rel="noreferrer"
+							aria-label={label}
+							style="display: inline-flex; align-items: center; gap: 6px; color: var(--text); transition: color 150ms ease;"
+							onmouseover="this.style.color = 'var(--accent)'"
+							onmouseout="this.style.color = 'var(--text)'"
+						>
+							<span
+								style={`display: inline-flex; width: 18px; height: 18px;`}
+								set:html={icon.svg.replace(
+									"<svg",
+									`<svg fill="${color}"`,
+								)}
+							/>
+							<span>{label}</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	function updateDiscordStatus(data: any) {
+		const statusContainer = document.getElementById("discord-status");
+		if (!statusContainer) return;
+
+		if (data?.status && data.status !== "offline") {
+			const statusDot = document.getElementById("status-dot");
+			const statusText = document.getElementById("status-text");
+
+			if (statusDot) {
+				const colors = {
+					online: { light: "#40a02b", dark: "#a6e3a1" },
+					idle: { light: "#df8e1d", dark: "#f9e2af" },
+					dnd: { light: "#d20f39", dark: "#f38ba8" },
+					offline: { light: "#9ca0b0", dark: "#6c7086" },
+				};
+
+				const statusColors = colors[data.status as keyof typeof colors] || colors.offline;
+				statusDot.style.background = `light-dark(${statusColors.light}, ${statusColors.dark})`;
+			}
+
+			if (statusText) {
+				if (data.customStatus && data.status !== "online") {
+					statusText.textContent = data.customStatus;
+					statusText.style.display = "";
+				} else {
+					statusText.style.display = "none";
+				}
+			}
+
+			statusContainer.style.display = "flex";
+			statusContainer.dataset.status = data.status;
+		} else {
+			statusContainer.style.display = "none";
+		}
+	}
+
+	function updateLastfm(data: any) {
+		if (!data?.name) return;
+
+		const artworkLink = document.getElementById("lastfm-artwork-link") as HTMLAnchorElement;
+		const artwork = document.getElementById("lastfm-artwork") as HTMLImageElement;
+		const trackLink = document.getElementById("lastfm-track-link") as HTMLAnchorElement;
+		const artistLink = document.getElementById("lastfm-artist-link") as HTMLAnchorElement;
+		const playingText = document.getElementById("lastfm-playing-text");
+
+		if (artworkLink) artworkLink.href = data.url;
+		if (artwork && data.artwork) artwork.src = data.artwork;
+		if (trackLink) {
+			trackLink.href = data.url;
+			trackLink.textContent = data.name;
+		}
+		if (artistLink) {
+			artistLink.href = `https://www.last.fm/music/${encodeURIComponent(data.artist)}`;
+			artistLink.textContent = data.artist;
+		}
+		if (playingText) {
+			playingText.textContent = data.nowPlaying ? "Currently playing" : "Last played";
+		}
+	}
+
+	async function refreshData() {
+		try {
+			const [discordRes, lastfmRes] = await Promise.all([
+				fetch("/api/discord.json").catch(() => null),
+				fetch("/api/lastfm.json").catch(() => null),
+			]);
+
+			if (discordRes?.ok) {
+				const discordData = await discordRes.json();
+				updateDiscordStatus(discordData);
+			}
+
+			if (lastfmRes?.ok) {
+				const lastfmData = await lastfmRes.json();
+				updateLastfm(lastfmData);
+			}
+		} catch (error) {
+			console.error("Error refreshing data:", error);
+		}
+	}
+
+	const refreshInterval = setInterval(refreshData, 5000);
+
+	window.addEventListener("beforeunload", () => {
+		if (refreshInterval) clearInterval(refreshInterval);
+	});
+</script>

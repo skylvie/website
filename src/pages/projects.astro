@@ -1,0 +1,84 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/Base.astro";
+import projects from "../content/projects.json";
+
+interface RepoCard {
+    repoUrl: string;
+    liveUrl?: string;
+    data: any | null;
+}
+
+const items = (projects as any).projects ?? [];
+
+async function loadRepo(repoUrl: string): Promise<any | null> {
+    const apiUrl = new URL("/api/github.json", Astro.url);
+    apiUrl.searchParams.set("repo", repoUrl);
+    try {
+        const res = await fetch(apiUrl);
+        return res.ok ? await res.json() : null;
+    } catch {
+        return null;
+    }
+}
+
+const repos: RepoCard[] = await Promise.all(
+    items.map(async (item: { repo: string; link?: string }) => ({
+        repoUrl: item.repo,
+        liveUrl: item.link,
+        data: await loadRepo(item.repo),
+    })),
+);
+---
+
+<BaseLayout
+    title="Projects"
+    description="A collection of my projects and repositories"
+>
+    <section class="glass card" style="display: grid; gap: 14px;">
+        <h1 class="section-title" style="margin: 0;">Projects</h1>
+        <div style="display: grid; gap: 12px;">
+            {
+                repos.map((entry) => {
+                    const repo = entry.data;
+                    const display = repo?.repo ?? entry.repoUrl;
+                    return (
+                        <article
+                            class="glass card"
+                            style="display: grid; gap: 10px;"
+                        >
+                            <div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                <a
+                                    href={repo?.url ?? entry.repoUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    style="font-weight: 700; letter-spacing: 0.3px;"
+                                >
+                                    {display}
+                                </a>
+                                {entry.liveUrl ? (
+                                    <a
+                                        class="button-link"
+                                        href={entry.liveUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Visit
+                                    </a>
+                                ) : null}
+                            </div>
+                            <p
+                                class="subtle-text"
+                                style="margin: 0; color: var(--text);"
+                            >
+                                {repo?.description ??
+                                    "Descriptions will appear once GH loads"}
+                            </p>
+                        </article>
+                    );
+                })
+            }
+        </div>
+    </section>
+</BaseLayout>

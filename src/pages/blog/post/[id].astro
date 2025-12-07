@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../../../layouts/Base.astro";
+import MarkdownIt from "markdown-it";
+import hljs from "highlight.js";
+import { readFile } from "fs/promises";
+
+export async function getStaticPaths() {
+    const blog = await import("../../../content/blog.json");
+    const allPosts = (blog.default as any).posts ?? [];
+    return allPosts.map((post: any) => ({
+        params: { id: post.id },
+        props: { meta: post },
+    }));
+}
+
+const md: MarkdownIt = new MarkdownIt({
+    html: true,
+    linkify: true,
+    breaks: true,
+    highlight: (code: string, lang: string): string => {
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return hljs.highlight(code, { language: lang }).value;
+            } catch { }
+        }
+        return md.utils.escapeHtml(code);
+    },
+});
+
+const { meta } = Astro.props as { meta: any };
+const filePath = `src/content/blog_posts/${meta.id}.md`;
+const markdown = await readFile(filePath, "utf-8");
+const html = md.render(markdown);
+
+function formatDate(raw: string): string {
+    const [month, day, year] = raw.split("-").map((n) => Number(n));
+    const dt = new Date(year, (month || 1) - 1, day || 1);
+
+    return dt.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+}
+
+export const prerender = true;
+---
+
+<BaseLayout title={meta.title} description={meta.summary}>
+    <section class="glass card" style="display: grid; gap: 12px;">
+        <div
+            style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap;"
+        >
+            <div
+                style="display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1;"
+            >
+                <a
+                    href="/blog"
+                    style="color: var(--accent); font-size: 18px; display: inline-flex; align-items: center; flex-shrink: 0;"
+                    >←</a
+                >
+                <h1
+                    style="margin: 0; font-size: clamp(20px, 5vw, 28px); font-weight: 700; word-break: break-word;"
+                >
+                    {meta.title}
+                </h1>
+            </div>
+            <a
+                href={`/blog/post/${meta.id}.rss`}
+                style="color: var(--accent); font-size: 14px; flex-shrink: 0;"
+                >RSS</a
+            >
+        </div>
+        <div style="display: grid; gap: 8px;">
+            <p
+                class="subtle-text"
+                style="margin: 0; font-size: 13px; word-break: break-word;"
+            >
+                {meta.summary}
+            </p>
+            <span class="subtle-text" style="font-size: 12px;"
+                >{formatDate(meta.date)}</span
+            >
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+            <div set:html={html} />
+        </div>
+    </section>
+</BaseLayout>
