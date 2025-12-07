@@ -10,5 +10,4 @@ pnpm preview
 
 ## TODO
 - Page/view transitions
-- 88x31 buttons
 - comments

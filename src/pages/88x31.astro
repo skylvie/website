@@ -1,0 +1,95 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/Base.astro";
+
+interface ButtonsResponse {
+	buttons: string[];
+	error?: string;
+}
+
+let buttons: string[] = [];
+let errorMessage = "";
+
+try {
+	const apiUrl = new URL("/api/88x31", Astro.url);
+	const res = await fetch(apiUrl);
+
+	if (res.ok) {
+		const data: ButtonsResponse = await res.json();
+
+		buttons = data.buttons;
+		errorMessage = data.error || "";
+	} else {
+		errorMessage = "Failed to load buttons";
+	}
+} catch {
+	errorMessage = "Error loading buttons";
+}
+---
+
+<BaseLayout title="88x31 Buttons" description="Collection of 88x31 web buttons">
+	<section
+		class="glass card"
+		style="
+			display: grid; 
+			gap: 14px;
+		"
+	>
+		<h1
+			class="section-title"
+			style="margin: 0;"
+		>
+			88x31 Buttons
+		</h1>
+
+		{
+			errorMessage ? (
+				<p
+					class="subtle-text"
+					style="
+						margin: 0;
+						color: var(--muted);
+					"
+				>
+					{errorMessage}
+				</p>
+			) : buttons.length === 0 ? (
+				<p
+					class="subtle-text"
+					style="
+						margin: 0;
+						color: var(--muted);
+					"
+				>
+					No buttons found :(
+				</p>
+			) : (
+				<div
+					style="
+						display: flex;
+						flex-wrap: wrap;
+						gap: 8px;
+						align-items: flex-start;
+					"
+				>
+					{buttons.map((button) => (
+						<img
+							src={button}
+							alt="88x31 button"
+							style="
+								width: 88px;
+								height: 31px;
+								border-radius: 0;
+								image-rendering: pixelated;
+								image-rendering: crisp-edges;
+								display: block;
+							"
+							loading="lazy"
+						/>
+					))}
+				</div>
+			)
+		}
+	</section>
+</BaseLayout>
