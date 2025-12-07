@@ -52,7 +52,7 @@ Text
 ![pfp](/pfp.png)
 | test    | a      | a              | b      | c    |
 |---------|--------|----------------|--------|------|
-| slyvie  | rain   | idk            | asd    | asd  |
+| Sylvie  | rain   | idk            | asd    | asd  |
 | asdbert | erb    | rtntym         | oi.opi | qwef |
 | erb     | erberb | edewrgbhrtehnb | p/op/  | a    |
 

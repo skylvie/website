@@ -194,12 +194,6 @@
         padding: 32px 20px 64px;
     }
 
-    @media (max-width: 640px) {
-        .page-shell {
-            padding: 16px 12px 48px;
-        }
-    }
-
     .glass {
         background: var(--bg-surface);
         border: 1px solid var(--border);
@@ -301,32 +295,6 @@
         font-size: 14px;
     }
 
-    @media (max-width: 640px) {
-        .glass h1 {
-            font-size: 24px;
-        }
-
-        .glass h2 {
-            font-size: 20px;
-        }
-
-        .glass h3 {
-            font-size: 18px;
-        }
-
-        .glass h4 {
-            font-size: 16px;
-        }
-
-        .glass h5 {
-            font-size: 14px;
-        }
-
-        .glass h6 {
-            font-size: 12px;
-        }
-    }
-
     .glass p {
         margin: 10px 0;
         line-height: 1.7;
@@ -387,29 +355,6 @@
         padding: 0;
         color: var(--text);
         font-size: 12px;
-    }
-
-    @media (max-width: 640px) {
-        .glass pre {
-            margin: 10px -18px;
-            border-radius: 0;
-            padding: 12px 14px;
-        }
-
-        .glass code {
-            font-size: 12px;
-        }
-
-        .glass blockquote {
-            margin: 10px -18px;
-            border-radius: 0;
-            padding: 12px 14px;
-        }
-
-        .glass img {
-            margin: 10px -18px;
-            border-radius: 0;
-        }
     }
 
     .glass table {

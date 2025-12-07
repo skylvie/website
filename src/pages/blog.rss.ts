@@ -7,10 +7,10 @@ export async function GET() {
     const site = process.env.SITE_URL || "http://localhost:4321";
 
     const feed = new RSS({
-        title: "Slyvie's Blog",
+        title: "Skylvie's Blog",
         site_url: `${site}/blog`,
         feed_url: `${site}/blog.rss`,
-        description: "Posts from Slyvie's Blog"
+        description: "Posts from Skylvie's Blog"
     });
 
     for (const post of posts) {

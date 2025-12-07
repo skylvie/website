@@ -7,6 +7,7 @@ import { readFile } from "fs/promises";
 export async function getStaticPaths() {
     const blog = await import("../../../content/blog.json");
     const allPosts = (blog.default as any).posts ?? [];
+
     return allPosts.map((post: any) => ({
         params: { id: post.id },
         props: { meta: post },
@@ -21,8 +22,9 @@ const md: MarkdownIt = new MarkdownIt({
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(code, { language: lang }).value;
-            } catch { }
+            } catch {}
         }
+
         return md.utils.escapeHtml(code);
     },
 });
@@ -49,32 +51,64 @@ export const prerender = true;
 <BaseLayout title={meta.title} description={meta.summary}>
     <section class="glass card" style="display: grid; gap: 12px;">
         <div
-            style="display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap;"
+            style="
+                display: flex; 
+                justify-content: space-between; 
+                gap: 12px; 
+                align-items: flex-start; 
+                flex-wrap: wrap;
+            "
         >
             <div
-                style="display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1;"
+                style="
+                    display: flex; 
+                    align-items: flex-start; 
+                    gap: 10px; 
+                    min-width: 0; 
+                    flex: 1;
+                "
             >
                 <a
                     href="/blog"
-                    style="color: var(--accent); font-size: 18px; display: inline-flex; align-items: center; flex-shrink: 0;"
+                    style="
+                        color: var(--accent); 
+                        font-size: 24px; 
+                        display: inline-flex; 
+                        align-items: center; 
+                        flex-shrink: 0;
+                    "
                     >←</a
                 >
                 <h1
-                    style="margin: 0; font-size: clamp(20px, 5vw, 28px); font-weight: 700; word-break: break-word;"
+                    style="
+                        margin: 0; 
+                        font-size: 28px; 
+                        font-weight: 700; 
+                        word-break: break-word;
+                    "
                 >
                     {meta.title}
                 </h1>
             </div>
             <a
                 href={`/blog/post/${meta.id}.rss`}
-                style="color: var(--accent); font-size: 14px; flex-shrink: 0;"
+                style="
+                    color: var(--accent); 
+                    font-size: 14px; 
+                    flex-shrink: 0; 
+                    text-decoration: underline;
+                "
                 >RSS</a
             >
         </div>
         <div style="display: grid; gap: 8px;">
             <p
                 class="subtle-text"
-                style="margin: 0; font-size: 13px; word-break: break-word;"
+                style="
+                    margin: 0; 
+                    font-size: 14px; 
+                    word-break: break-word;
+                "
             >
                 {meta.summary}
             </p>
@@ -82,7 +116,12 @@ export const prerender = true;
                 >{formatDate(meta.date)}</span
             >
         </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 16px;">
+        <div
+            style="
+            border-top: 1px solid var(--border); 
+            padding-top: 16px;
+        "
+        >
             <div set:html={html} />
         </div>
     </section>

@@ -5,16 +5,19 @@ export const prerender = false;
 function buildHeaders(): Record<string, string> {
     const token = process.env.GITHUB_TOKEN;
     const headers: Record<string, string> = {
-        "User-Agent": "slyvie-astro-site"
+        "User-Agent": "SylvNET"
     };
+
     if (token) {
         headers.Authorization = `Bearer ${token}`;
     }
+
     return headers;
 }
 
 function parseSlug(raw: string | null): string | null {
     if (!raw) return null;
+
     try {
         if (raw.includes("github.com")) {
             const url = new URL(raw);

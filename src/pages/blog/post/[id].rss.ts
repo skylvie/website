@@ -29,7 +29,7 @@ export const GET: APIRoute = async ({ params }) => {
     const markdown = await readFile(filePath, "utf-8");
     const html = md.render(markdown);
     const feed = new RSS({
-        title: `${meta.title} | Slyvie Rain`,
+        title: `${meta.title} | SylvNET`,
         site_url: `${site}/blog/post/${id}`,
         feed_url: `${site}/blog/post/${id}.rss`,
         description: meta.summary

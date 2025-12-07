@@ -29,13 +29,28 @@ const socialIcons = [
 const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 ---
 
-<BaseLayout title="Home" description="Slyvie's Website">
+<BaseLayout title="Home" description="Skylvie's Website">
 	<section class="glass card">
 		<div
-			style="display: grid; grid-template-columns: minmax(80px, 100px) 1fr; gap: 16px; align-items: center;"
+			style="
+				display: grid; 
+				grid-template-columns: minmax(80px, 100px) 1fr; 
+				gap: 16px; 
+				align-items: center;
+			"
 		>
 			<div
-				style="width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; background: var(--bg-surface); flex-shrink: 0; display: flex; align-items: center; justify-content: center;"
+				style="
+				width: 100%; 
+				aspect-ratio: 1; 
+				border-radius: 12px; 
+				overflow: hidden; 
+				background: var(--bg-surface); 
+				flex-shrink: 0; 
+				display: flex; 
+				align-items: center;
+				justify-content: center;
+			"
 			>
 				<img
 					src="/pfp.png"
@@ -46,7 +61,13 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 			</div>
 
 			<div
-				style="display: flex; flex-direction: column; gap: 8px; padding-top: 0; min-width: 0;"
+				style="
+					display: flex; 
+					flex-direction: column; 
+					gap: 8px; 
+					padding-top: 0; 
+					min-width: 0;
+				"
 			>
 				<div
 					style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;"
@@ -56,57 +77,107 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 					>
 						{home.name}
 					</h1>
-					<span
-						style="background: var(--accent); color: var(--bg); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap;"
-						>{home.pronouns}</span
+				<span
+					style="
+						background: var(--accent); 
+						color: var(--bg); 
+						padding: 4px 8px; 
+						border-radius: 4px; 
+						font-size: 11px; 
+						font-weight: 600; 
+						white-space: nowrap;
+					"
+					>{home.pronouns}</span
 					>
 				</div>
 
-				{discord?.status && discord.status !== "offline" && (
-					<div
-						id="discord-status"
-						style="display: flex; gap: 6px; align-items: center; min-width: 0;"
-						data-status={discord.status}
-					>
-						<span
-							id="status-dot"
-							style={`width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; background: ${discord.status === "online" ? "#a6e3a1" : discord.status === "idle" ? "#f9e2af" : discord.status === "dnd" ? "#f38ba8" : "#6c7086"};`}
-						></span>
-						{discord.customStatus && discord.status !== "online" && (
-							<span id="status-text" style="font-size: 13px; overflow-wrap: break-word;">
-								{discord.customStatus}
-							</span>
-						)}
-					</div>
-				)}
+				{
+					discord?.status && discord.status !== "offline" && (
+						<div
+							id="discord-status"
+							style="display: flex; gap: 6px; align-items: center; min-width: 0;"
+							data-status={discord.status}
+						>
+							<span
+								id="status-dot"
+								style={`width: 8px; height: 8px; border-radius: 999px; flex-shrink: 0; background: ${discord.status === "online" ? "#a6e3a1" : discord.status === "idle" ? "#f9e2af" : discord.status === "dnd" ? "#f38ba8" : "#6c7086"};`}
+							/>
+							{discord.customStatus &&
+								discord.status !== "online" && (
+									<span
+										id="status-text"
+										style="font-size: 13px; overflow-wrap: break-word;"
+									>
+										{discord.customStatus}
+									</span>
+								)}
+						</div>
+					)
+				}
 			</div>
 		</div>
 
 		{
 			lastfm?.name ? (
-				<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: grid; grid-template-columns: minmax(60px, 80px) 1fr; gap: 12px; align-items: flex-start;">
+				<div
+					style="
+						margin-top: 16px; 
+						padding-top: 16px; 
+						border-top: 1px solid var(--border); 
+						display: grid; 
+						grid-template-columns: minmax(60px, 80px) 1fr; 
+						gap: 12px; 
+						align-items: flex-start;
+					"
+				>
 					<a
 						id="lastfm-artwork-link"
 						href={lastfm.url}
 						target="_blank"
 						rel="noreferrer"
-						style="width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+						style="
+							width: 100%; 
+							aspect-ratio: 1; 
+							border-radius: 8px; 
+							overflow: hidden; 
+							display: flex; 
+							align-items: center; 
+							justify-content: center; 
+							flex-shrink: 0;
+						"
 					>
 						<img
 							id="lastfm-artwork"
 							src={lastfm.artwork || "/pfp.png"}
 							alt="Album art"
-							style="width: 100%; height: 100%; object-fit: cover;"
+							style="
+								width: 100%; 
+								height: 100%; 
+								object-fit: cover;
+							"
 							loading="lazy"
 						/>
 					</a>
-					<div style="display: flex; flex-direction: column; gap: 4px; min-width: 0;">
+					<div
+						style="
+							display: flex; 
+							flex-direction: column; 
+							gap: 4px; 
+							min-width: 0;
+						"
+					>
 						<a
 							id="lastfm-track-link"
 							href={lastfm.url}
 							target="_blank"
 							rel="noreferrer"
-							style="font-weight: 700; color: var(--accent); font-size: clamp(12px, 3vw, 14px); line-height: 1.3; word-break: break-word;"
+							style="
+								font-weight: 700; 
+								color: var(--accent); 
+								font-size: 14px; 
+								line-height: 1.3; 
+								word-break: break-word;
+							"
 						>
 							{lastfm.name}
 						</a>
@@ -115,11 +186,25 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 							href={`https://www.last.fm/music/${encodeURIComponent(lastfm.artist)}`}
 							target="_blank"
 							rel="noreferrer"
-							style="font-size: 10px; color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 1px; word-break: break-word;"
+							style="
+								font-size: 10px; 
+								color: var(--text); 
+								text-decoration: underline; 
+								text-decoration-thickness: 1px; 
+								text-underline-offset: 1px; 
+								word-break: break-word;
+							"
 						>
 							{lastfm.artist}
 						</a>
-						<span id="lastfm-playing-text" style="font-size: 11px; color: var(--muted); margin-top: 2px;">
+						<span
+							id="lastfm-playing-text"
+							style="
+								font-size: 11px; 
+								color: var(--muted); 
+								margin-top: 2px;
+							"
+						>
 							{lastfm.nowPlaying
 								? "Currently playing"
 								: "Last played"}
@@ -127,8 +212,17 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 					</div>
 				</div>
 			) : (
-				<div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
-					<p class="subtle-text" style="margin: 0;">
+				<div
+					style="
+						margin-top: 16px; 
+						padding-top: 16px; 
+						border-top: 1px solid var(--border);
+					"
+				>
+					<p
+						class="subtle-text"
+						style="margin: 0;"
+					>
 						Last.fm please work
 					</p>
 				</div>
@@ -137,21 +231,38 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 	</section>
 
 	<section
-		style="margin-top: 22px; display: grid; grid-template-columns: 1fr; gap: 14px;"
+		style="
+			margin-top: 22px; 
+			display: grid; 
+			grid-template-columns: 1fr; 
+			gap: 14px;
+		"
 	>
 		<div class="glass card">
 			<h2 class="section-title">About</h2>
 			<div
-				style="color: var(--text); display: grid; gap: 10px; text-align: left;"
+				style="
+					color: var(--text); 
+					display: grid; 
+					gap: 10px; 
+					text-align: left;
+				"
 			>
-				{aboutLines.map((line) => <p style="margin: 0;">{line}</p>)}
+				{aboutLines.map((line) => (
+					<p style="margin: 0;">{line}</p>
+				))}
 			</div>
 		</div>
 
 		<div class="glass card">
 			<h2 class="section-title">Links</h2>
 			<div
-				style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: flex-start;"
+				style="
+					display: flex; 
+					flex-wrap: wrap; 
+					gap: 16px; 
+					justify-content: flex-start;
+				"
 			>
 				{
 					socialIcons.map(({ key, icon, label, color }) => (
@@ -160,12 +271,22 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 							target="_blank"
 							rel="noreferrer"
 							aria-label={label}
-							style="display: inline-flex; align-items: center; gap: 6px; color: var(--text); transition: color 150ms ease;"
+							style="
+								display: inline-flex; 
+								align-items: center; 
+								gap: 6px; 
+								color: var(--text); 
+								transition: color 150ms ease;
+							"
 							onmouseover="this.style.color = 'var(--accent)'"
 							onmouseout="this.style.color = 'var(--text)'"
 						>
 							<span
-								style={`display: inline-flex; width: 18px; height: 18px;`}
+								style="
+									display: inline-flex; 
+									width: 18px; 
+									height: 18px;
+								"
 								set:html={icon.svg.replace(
 									"<svg",
 									`<svg fill="${color}"`,
@@ -220,10 +341,18 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 	function updateLastfm(data: any) {
 		if (!data?.name) return;
 
-		const artworkLink = document.getElementById("lastfm-artwork-link") as HTMLAnchorElement;
-		const artwork = document.getElementById("lastfm-artwork") as HTMLImageElement;
-		const trackLink = document.getElementById("lastfm-track-link") as HTMLAnchorElement;
-		const artistLink = document.getElementById("lastfm-artist-link") as HTMLAnchorElement;
+		const artworkLink = document.getElementById(
+			"lastfm-artwork-link",
+		) as HTMLAnchorElement;
+		const artwork = document.getElementById(
+			"lastfm-artwork",
+		) as HTMLImageElement;
+		const trackLink = document.getElementById(
+			"lastfm-track-link",
+		) as HTMLAnchorElement;
+		const artistLink = document.getElementById(
+			"lastfm-artist-link",
+		) as HTMLAnchorElement;
 		const playingText = document.getElementById("lastfm-playing-text");
 
 		if (artworkLink) artworkLink.href = data.url;
@@ -237,7 +366,9 @@ const aboutLines = aboutMe.split(/\n+/).filter(Boolean);
 			artistLink.textContent = data.artist;
 		}
 		if (playingText) {
-			playingText.textContent = data.nowPlaying ? "Currently playing" : "Last played";
+			playingText.textContent = data.nowPlaying
+				? "Currently playing"
+				: "Last played";
 		}
 	}
 
