@@ -15,6 +15,7 @@ const {
 const pageTitle = title ? `${title} | SylvNET` : "SylvNET";
 const origin = Astro.url?.origin ?? "http://localhost:4321";
 const canonical = `${origin}${Astro.url.pathname}`;
+
 let commitHash = "dev";
 
 try {
@@ -25,6 +26,33 @@ try {
 }
 
 const commitUrl = `https://github.com/skylvie/website/commit/${commitHash}`;
+
+let visitorCount = 0;
+
+try {
+    const visitorUrl = new URL("/api/visitor", Astro.url);
+    const res = await fetch(visitorUrl);
+
+    if (res.ok) {
+        const data = await res.json();
+        visitorCount = data.count;
+    }
+} catch {
+    visitorCount = 0;
+}
+
+function getOrdinalSuffix(num: number): string {
+    const j = num % 10;
+    const k = num % 100;
+
+    if (j === 1 && k !== 11) return "st";
+    if (j === 2 && k !== 12) return "nd";
+    if (j === 3 && k !== 13) return "rd";
+
+    return "th";
+}
+
+const visitorOrdinal = `${visitorCount.toLocaleString()}${getOrdinalSuffix(visitorCount)}`;
 ---
 
 <!doctype html>
@@ -103,6 +131,30 @@ const commitUrl = `https://github.com/skylvie/website/commit/${commitHash}`;
                         >Blog</a
                     >
                 </nav>
+            </header>
+            <main>
+                <slot />
+            </main>
+            <footer
+                class="glass card"
+                style="
+                    margin-top: 18px; 
+                    padding: 12px 16px; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: space-between; 
+                    gap: 12px; 
+                    flex-wrap: wrap;
+                "
+            >
+                <span
+                    style="
+                        color: var(--muted);
+                        font-size: 12px;
+                    "
+                >
+                    You are the {visitorOrdinal} visitor!
+                </span>
                 <a
                     href={commitUrl}
                     target="_blank"
@@ -118,10 +170,7 @@ const commitUrl = `https://github.com/skylvie/website/commit/${commitHash}`;
                 >
                     {commitHash}
                 </a>
-            </header>
-            <main>
-                <slot />
-            </main>
+            </footer>
         </div>
     </body>
 </html>

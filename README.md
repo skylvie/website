@@ -10,6 +10,5 @@ pnpm preview
 
 ## TODO
 - Page/view transitions
-- Unique visitor count
 - 88x31 buttons
 - comments
