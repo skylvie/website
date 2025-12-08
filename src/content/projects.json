@@ -3,6 +3,9 @@
         {
             "repo": "https://github.com/skylvie/website",
             "link": "https://skylvi.net"
+        },
+        {
+            "repo": "https://github.com/frakatime/spec"
         }
     ]
 }
